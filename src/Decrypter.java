@@ -21,7 +21,19 @@ class Decrypter extends FileAccessor{
 
             readSourceFile();
 
-            decrypt();
+            System.out.println("before decryption");
+            for (int i = 0; i < 100; i++) {
+                System.out.print(bytes[i] + ", ");
+            }
+
+            SecureByteShuffler.decrypt(bytes);
+
+            Main.after = bytes.clone();
+            //
+            System.out.println("after decryption");
+            for (int i = 0; i < 100; i++) {
+                System.out.print(bytes[i] + ", ");
+            }
 
             saveDecryptedFile();
 
@@ -29,12 +41,6 @@ class Decrypter extends FileAccessor{
             log("failed to decrypt file: " + input.getName() + " due to error: " + e.getMessage());
         }
         log("decryption of file " + input.getName() + " finished successfully");
-    }
-
-    private void decrypt() {
-        byte tmp = bytes[bytes.length - 1];
-        if (bytes.length - 1 >= 0) System.arraycopy(bytes, 0, bytes, 1, bytes.length - 1);
-        bytes[0] = tmp;
     }
 
     private void saveDecryptedFile(){

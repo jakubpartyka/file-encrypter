@@ -1,5 +1,4 @@
 import java.io.*;
-
 class Encrypter extends FileAccessor{
 
     private byte [] bytes;
@@ -19,20 +18,22 @@ class Encrypter extends FileAccessor{
 
             readSourceFile();
 
-            encrypt();
+                System.out.println("before encryption");
+            for (int i = 0; i < 100; i++) {
+                System.out.print(bytes[i] + ", ");
+            }
+            Main.before = bytes.clone();
+
+
+            SecureByteShuffler.encrypt(bytes);
 
             saveEncryptedFile();
 
         } catch (Exception e){
+            e.printStackTrace();
             log("failed to encrypt file: " + input.getName() + " due to error: " + e.getMessage());
         }
         log("encryption of file " + input.getName() + " finished successfully");
-    }
-
-    private void encrypt() {
-        byte start = bytes[0];
-        System.arraycopy(bytes, 1, bytes, 0, bytes.length - 1);
-        bytes[bytes.length - 1] = start;
     }
 
     private void saveEncryptedFile(){

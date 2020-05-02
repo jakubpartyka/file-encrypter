@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.Arrays;
+import java.util.Random;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 class EncryptingKey{
@@ -12,6 +14,17 @@ class EncryptingKey{
         inputStream.close();
     }
 
+    EncryptingKey(byte[] key) {
+        this.key = key;
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    static byte[] generateNewKey(int keySize) {
+        byte [] key = new byte[keySize];
+        new Random((long) (Math.random() * Long.MAX_VALUE)).nextBytes(key);
+        return key;
+    }
+
     byte [] getKey(){
         return key;
     }
@@ -20,5 +33,8 @@ class EncryptingKey{
         return key.length;
     }
 
-
+    @Override
+    public String toString() {
+        return Arrays.toString(key);
+    }
 }
