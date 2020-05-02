@@ -8,7 +8,7 @@ class Logger {
 
     static void log(String message, String identifier){
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("[DD-MM-YYYY-HH:mm:ss]");
+            SimpleDateFormat sdf = new SimpleDateFormat("[dd-MM-YYYY-HH:mm:ss]");
             String ts = sdf.format(Calendar.getInstance().getTime());
             FileWriter fileWriter = new FileWriter(logFile,true);
             String logMessage = ts + "[" + identifier + "]:" + message;

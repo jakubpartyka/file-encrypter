@@ -11,8 +11,6 @@ public class Main {
 
         encrypter.encrypt(file);
 
-        Thread.sleep(5000);
-
         decrypter.decrypt(new File("src/encrypted-cat.jpg"));
 
     }
