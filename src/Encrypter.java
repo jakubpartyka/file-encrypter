@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -15,8 +16,7 @@ class Encrypter {
 
             byte [] bytes = new byte[(int) input.length()];
             InputStream inputStream = new FileInputStream(input);
-
-            inputStream.read(bytes);
+            System.out.println(inputStream.read(bytes) + " bytes read and encrypted from file: " + input.getName());
 
             byte start = bytes[0];
             System.arraycopy(bytes, 1, bytes, 0, bytes.length - 1);
