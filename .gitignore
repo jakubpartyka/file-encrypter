@@ -3,6 +3,9 @@
 
 *.txt
 
+# byte shuffler
+*SecureByteShuffler.*
+
 *.jpg
 *.png
 *.DS_Store

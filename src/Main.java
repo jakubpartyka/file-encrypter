@@ -1,7 +1,7 @@
 import java.io.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
         Logger.readConfigFile();
 
         File file = new File("src/cat.jpg");
