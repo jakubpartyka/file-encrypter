@@ -1,6 +1,10 @@
 # Compiled class file
 *.class
 
+*.jpg
+*.png
+*DS_Store
+
 # Log file
 *.log
 
