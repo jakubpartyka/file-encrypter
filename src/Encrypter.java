@@ -10,28 +10,23 @@ class Encrypter extends FileAccessor{
         super("ENCR");
     }
 
-    boolean encrypt(File input){
+    void encrypt(File input){
         try {
-            //encrypt method
             output = new File("src/encrypted-" + input.getName());
             this.input = input;
 
             clearFileContent(output);
 
-            bytes = new byte[(int) input.length()];
-            InputStream inputStream = new FileInputStream(input);
-            System.out.println(inputStream.read(bytes) + " bytes read and encrypted from file: " + input.getName());
+            readSourceFile();
 
             encrypt();
 
             saveEncryptedFile();
 
-            inputStream.close();
-
         } catch (Exception e){
             log("failed to encrypt file: " + input.getName() + " due to error: " + e.getMessage());
         }
-        return true;
+        log("encryption of file " + input.getName() + " finished successfully");
     }
 
     private void encrypt() {
@@ -56,14 +51,10 @@ class Encrypter extends FileAccessor{
         }
     }
 
-    private static void clearFileContent(File file){
-        PrintWriter writer;
-        try {
-            writer = new PrintWriter(file);
-            writer.print("");
-            writer.close();
-        } catch (FileNotFoundException e) {
-            Logger.log("an error occurred while clearing file " + file.getPath(),"FCLR");
-        }
+    private void readSourceFile() throws IOException {
+        bytes = new byte[(int) input.length()];
+        InputStream inputStream = new FileInputStream(input);
+        System.out.println(inputStream.read(bytes) + " bytes read and encrypted from file: " + input.getName());
+        inputStream.close();
     }
 }

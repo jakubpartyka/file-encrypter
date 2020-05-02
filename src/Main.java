@@ -1,18 +1,19 @@
 import java.io.*;
-import java.util.ArrayList;
 
 public class Main {
-    private static ArrayList<Byte> data = new ArrayList<>();
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         Logger.readConfigFile();
 
-        File input = new File("src/cat.jpg");
+        File file = new File("src/cat.jpg");
 
         Encrypter encrypter = new Encrypter();
-        if(encrypter.encrypt(input))
-            System.out.println("encryption successful");
-        else
-            System.out.println("failed to encrypt");
+        Decrypter decrypter = new Decrypter();
+
+        encrypter.encrypt(file);
+
+        Thread.sleep(5000);
+
+        decrypter.decrypt(new File("src/encrypted-cat.jpg"));
+
     }
 }

@@ -11,8 +11,8 @@ class Logger {
             SimpleDateFormat sdf = new SimpleDateFormat("[DD-MM-YYYY-HH:mm:ss]");
             String ts = sdf.format(Calendar.getInstance().getTime());
             FileWriter fileWriter = new FileWriter(logFile,true);
-            String logMessage = ts + "[" + identifier + "]:";
-            fileWriter.write( logMessage + message + "\n");
+            String logMessage = ts + "[" + identifier + "]:" + message;
+            fileWriter.write( logMessage + "\n");
 
             //todo remove
             System.out.println(logMessage);

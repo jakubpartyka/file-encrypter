@@ -1,37 +1,64 @@
 import java.io.*;
-import java.util.Arrays;
 
-@SuppressWarnings("ALL")
-public class Decrypter {
-    public static void main(String[] args) throws IOException {
-        File input = new File("src/encrypted.jpg");
-        File output = new File("src/decrypted.jpg");
-        byte [] bytes = new byte[(int) input.length()];
-        InputStream inputStream = new FileInputStream(input);
-        OutputStream outputStream = new FileOutputStream(output);
-        inputStream.read(bytes);
-        System.out.println(Arrays.toString(bytes));
+class Decrypter extends FileAccessor{
 
-        byte tmp = bytes[bytes.length - 1];
+    private byte [] bytes;
+    private File output;
+    private File input;
 
-        for (int i = bytes.length - 1; i > 0; i--) {
-            bytes[i] = bytes[i-1];
-        }
-
-
-        bytes[0] = tmp;
-
-        outputStream.write(bytes);
-
-        System.out.println(Arrays.toString(bytes));
-
-        inputStream.close();
-        outputStream.close();
-
-
-
-
-
-
+    Decrypter() {
+        super("DECR");
     }
+
+    void decrypt(File input){
+        try {
+            this.input = input;
+            String filename = input.getName().replace("encrypted-","");
+            System.out.println(filename);
+            output = new File("src/" + filename);
+
+            clearFileContent(output);
+
+            readSourceFile();
+
+            decrypt();
+
+            saveDecryptedFile();
+
+        } catch (Exception e){
+            log("failed to decrypt file: " + input.getName() + " due to error: " + e.getMessage());
+        }
+        log("decryption of file " + input.getName() + " finished successfully");
+    }
+
+    private void decrypt() {
+        byte tmp = bytes[bytes.length - 1];
+        if (bytes.length - 1 >= 0) System.arraycopy(bytes, 0, bytes, 1, bytes.length - 1);
+        bytes[0] = tmp;
+    }
+
+    private void saveDecryptedFile(){
+        try {
+            //save output
+            OutputStream outputStream = new FileOutputStream(output);
+            outputStream.write(bytes,0,bytes.length);
+            outputStream.close();
+
+            //delete input
+            if(!input.delete())
+                log("failed to delete source file!");
+
+        } catch (IOException e) {
+            log("failed to save encrypted file: " + output.getName() + " due to error: " + e.getMessage());
+        }
+    }
+
+    private void readSourceFile() throws IOException {
+        bytes = new byte[(int) input.length()];
+        InputStream inputStream = new FileInputStream(input);
+        System.out.println(inputStream.read(bytes) + " bytes read from source file: " + input.getName());
+        inputStream.close();
+    }
+
+
 }

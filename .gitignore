@@ -1,6 +1,8 @@
 # Compiled class file
 *.class
 
+*.txt
+
 *.jpg
 *.png
 *.DS_Store
