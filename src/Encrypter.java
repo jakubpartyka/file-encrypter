@@ -1,49 +1,69 @@
 import java.io.*;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 
-class Encrypter {
-    private final static Logger LOGGER = Logger.getLogger(Encrypter.class.getName());
+class Encrypter extends FileAccessor{
+
+    private byte [] bytes;
+    private File output;
+    private File input;
+
+    Encrypter() {
+        super("ENCR");
+    }
 
     boolean encrypt(File input){
         try {
             //encrypt method
-            File output = new File("src/encrypted-" + input.getName());
+            output = new File("src/encrypted-" + input.getName());
+            this.input = input;
 
             clearFileContent(output);
 
-            byte [] bytes = new byte[(int) input.length()];
+            bytes = new byte[(int) input.length()];
             InputStream inputStream = new FileInputStream(input);
             System.out.println(inputStream.read(bytes) + " bytes read and encrypted from file: " + input.getName());
 
-            byte start = bytes[0];
-            System.arraycopy(bytes, 1, bytes, 0, bytes.length - 1);
-            bytes[bytes.length - 1] = start;
+            encrypt();
 
-            OutputStream outputStream = new FileOutputStream(output);
-            outputStream.write(bytes,0,bytes.length);
+            saveEncryptedFile();
 
             inputStream.close();
-            outputStream.close();
 
         } catch (Exception e){
-            LOGGER.setLevel(Level.SEVERE);
-            LOGGER.log(new LogRecord(LOGGER.getLevel(),"Failed to encrypt file " + input.getPath() + " due to error: \n" + e.getMessage() + "\n"));
+            log("failed to encrypt file: " + input.getName() + " due to error: " + e.getMessage());
         }
         return true;
     }
 
+    private void encrypt() {
+        byte start = bytes[0];
+        System.arraycopy(bytes, 1, bytes, 0, bytes.length - 1);
+        bytes[bytes.length - 1] = start;
+    }
+
+    private void saveEncryptedFile(){
+        try {
+            //save output
+            OutputStream outputStream = new FileOutputStream(output);
+            outputStream.write(bytes,0,bytes.length);
+            outputStream.close();
+
+            //delete input
+            if(!input.delete())
+                log("failed to delete source file!");
+
+        } catch (IOException e) {
+            log("failed to save encrypted file: " + output.getName() + " due to error: " + e.getMessage());
+        }
+    }
+
     private static void clearFileContent(File file){
-        PrintWriter writer = null;
+        PrintWriter writer;
         try {
             writer = new PrintWriter(file);
             writer.print("");
             writer.close();
         } catch (FileNotFoundException e) {
-            LOGGER.setLevel(Level.WARNING);
-            LOGGER.log(new LogRecord(LOGGER.getLevel(),"an error occurred while clearing file " + file.getPath()));
+            Logger.log("an error occurred while clearing file " + file.getPath(),"FCLR");
         }
     }
 }
