@@ -31,6 +31,7 @@ class Encrypter extends FileAccessor{
         log("encryption of file " + input.getName() + " finished successfully");
     }
 
+    @Override
     protected void writeOutput(){
         try {
             //save output
