@@ -1,3 +1,5 @@
+package Encryption;
+
 import javax.swing.*;
 import java.io.*;
 import  GUI.*;
@@ -23,7 +25,7 @@ public class Main {
 
 
         File file = new File("src/cat.jpg");
-        EncryptingKey key = new EncryptingKey(EncryptingKey.generateNewKey(100));
+        EncryptionKey key = new EncryptionKey(EncryptionKey.generateNewKey(100));
         SecureByteShuffler.setEncryptKey(key);
 
         Encrypter encrypter = new Encrypter();

@@ -65,13 +65,18 @@
                       <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                   </hspacer>
-                  <component id="cf0ef" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+                  <component id="cf0ef" class="javax.swing.JTextField" binding="fileInputField">
                     <constraints>
                       <grid row="3" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="150" height="-1"/>
                       </grid>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <editable value="true"/>
+                      <enabled value="false"/>
+                      <requestFocusEnabled value="false"/>
+                      <text value="no file selected"/>
+                    </properties>
                   </component>
                   <vspacer id="708d">
                     <constraints>

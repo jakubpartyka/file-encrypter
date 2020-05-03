@@ -1,3 +1,5 @@
+package Encryption;
+
 import java.io.*;
 
 class Decrypter extends FileAccessor{
