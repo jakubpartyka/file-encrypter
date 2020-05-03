@@ -34,7 +34,7 @@ public class MainInterface implements Runnable {
         //initialize main frame
         frame = new JFrame("File Encrypter");
         frame.setResizable(false);
-        frame.setSize(600,400);
+        frame.setSize(600,500);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);   //todo operation on widow close
         frame.add(mainPanel);
@@ -46,6 +46,7 @@ public class MainInterface implements Runnable {
         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         jfc.setApproveButtonText("Encrypt");
         jfc.setControlButtonsAreShown(false);
+        jfc.setMultiSelectionEnabled(true);
 
         panel1.setLayout(new BorderLayout());
         panel1.add(new JLabel("Choose file(s) to encrypt"),BorderLayout.NORTH);
