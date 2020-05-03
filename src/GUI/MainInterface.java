@@ -7,6 +7,7 @@ import Encryption.SecureByteShuffler;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -21,7 +22,11 @@ public class MainInterface implements Runnable {
     private JTextField savePath;
     private JTextField size;
     private JButton generateButton;
-    private JTree tree;
+    private JPanel panel1;
+    private JPanel decryptPanel;
+    private JPanel encryptPanel;
+    private JButton encryptButton;
+    private JCheckBox deleteOriginalFilesCheckBox;
 
 
     @Override
@@ -36,6 +41,22 @@ public class MainInterface implements Runnable {
 
         //todo remove
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+
+        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        jfc.setApproveButtonText("Encrypt");
+        jfc.setControlButtonsAreShown(false);
+
+        panel1.setLayout(new BorderLayout());
+        panel1.add(new JLabel("Choose file(s) to encrypt"),BorderLayout.NORTH);
+        panel1.add(jfc,BorderLayout.CENTER);
+
+
+
+
+
+
+
 
         addActionListeners();
 
@@ -104,5 +125,9 @@ public class MainInterface implements Runnable {
             EncryptionKey.setSaveFile(null);
             savePath.setText("select save directory");
         });
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }
