@@ -17,6 +17,10 @@ public class MainInterface implements Runnable {
     private JPanel mainPanel;
     private JTextField fileInputField;
     private JButton browseButton;
+    private JButton saveButton;
+    private JTextField savePath;
+    private JTextField a256TextField;
+    private JButton generateButton;
 
 
     @Override
