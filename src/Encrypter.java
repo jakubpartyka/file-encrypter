@@ -16,18 +16,13 @@ class Encrypter extends FileAccessor{
 
             clearFileContent(output);
 
-            readSourceFile();
+            readInput();
 
-                System.out.println("before encryption");
-            for (int i = 0; i < 100; i++) {
-                System.out.print(bytes[i] + ", ");
-            }
-            Main.before = bytes.clone();
-
+            SecureByteShuffler.original = bytes.clone();
 
             SecureByteShuffler.encrypt(bytes);
 
-            saveEncryptedFile();
+            writeOutput();
 
         } catch (Exception e){
             e.printStackTrace();
@@ -36,26 +31,34 @@ class Encrypter extends FileAccessor{
         log("encryption of file " + input.getName() + " finished successfully");
     }
 
-    private void saveEncryptedFile(){
+    protected void writeOutput(){
         try {
             //save output
             OutputStream outputStream = new FileOutputStream(output);
             outputStream.write(bytes,0,bytes.length);
             outputStream.close();
-
             //delete input
             if(!input.delete())
                 log("failed to delete source file!");
-
         } catch (IOException e) {
-            log("failed to save encrypted file: " + output.getName() + " due to error: " + e.getMessage());
+            e.printStackTrace();
+            //todo
         }
     }
 
-    private void readSourceFile() throws IOException {
-        bytes = new byte[(int) input.length()];
-        InputStream inputStream = new FileInputStream(input);
-        System.out.println(inputStream.read(bytes) + " bytes read and encrypted from file: " + input.getName());
-        inputStream.close();
+    @Override
+    protected void readInput() {
+        try {
+            bytes = new byte[(int) input.length()];
+            InputStream inputStream = new FileInputStream(input);
+            log(inputStream.read(bytes) + " bytes read from file: " + input.getName());
+            inputStream.close();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            //todo
+        }
     }
+
+    //todo delete input file only after output was saved successfully
 }

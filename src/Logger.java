@@ -21,7 +21,21 @@ class Logger {
         } catch (IOException ignored) {}
     }
 
-    static void readConfigFile() throws IOException {
+    static void start() throws IOException {
+        readConfigFile();
+        logNewSession();
+    }
+
+    private static void logNewSession() throws IOException {
+        SimpleDateFormat sdf = new SimpleDateFormat("[dd-MM-YYYY-HH:mm:ss]");
+        String ts = sdf.format(Calendar.getInstance().getTime());
+        FileWriter fileWriter = new FileWriter(logFile,true);
+        String logMessage = "==================\n" + ts + "[LOG]:" + "NEW SESSION STARTED";
+        fileWriter.write( logMessage + "\n");
+        fileWriter.close();
+    }
+
+    private static void readConfigFile() throws IOException{
         BufferedReader reader = new BufferedReader(new FileReader(".config"));
         String line = reader.readLine();
         while (line != null){

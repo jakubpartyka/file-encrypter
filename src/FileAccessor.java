@@ -3,14 +3,18 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 abstract class FileAccessor {
-    private static String IDENTIFIER = "NONE";
+    private String identifier;
 
     FileAccessor(String identifier) {
-        IDENTIFIER = identifier;
+        this.identifier = identifier;
     }
 
-    static void log(String message){
-        Logger.log(message, IDENTIFIER);
+    abstract void readInput();
+
+    abstract void writeOutput();
+
+    void log(String message){
+        Logger.log(message, identifier);
     }
 
     static void clearFileContent(File file){
