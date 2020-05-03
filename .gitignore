@@ -12,6 +12,7 @@
 *.jpg
 *.png
 *.DS_Store
+*.iml
 
 # Log file
 *.log
