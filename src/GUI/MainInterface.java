@@ -21,6 +21,7 @@ public class MainInterface implements Runnable {
     private JTextField savePath;
     private JTextField size;
     private JButton generateButton;
+    private JTree tree;
 
 
     @Override
@@ -85,14 +86,23 @@ public class MainInterface implements Runnable {
 
                 savePath.setText(jfc.getSelectedFile().getAbsolutePath());
 
-                //save key to file
-                if(EncryptionKey.generateNewKey(saveFile,Integer.parseInt(size.getText())))
-                    JOptionPane.showMessageDialog(null,"Key generated successfully","Success",JOptionPane.INFORMATION_MESSAGE);
-                else
-                    JOptionPane.showMessageDialog(null,"An error occurred while creating new encryption key","Failed to generate new key",JOptionPane.WARNING_MESSAGE);
+                EncryptionKey.setSaveFile(saveFile);
             }
+        });
 
+        //GENERATE NEW KEY
+        generateButton.addActionListener(e -> {
+            if(EncryptionKey.getSaveFile() == null){
+                JOptionPane.showMessageDialog(null,"Choose save directory first","Choose destination",JOptionPane.INFORMATION_MESSAGE);
+            }
+            //save key to file
+            if(EncryptionKey.generateNewKeyToFile(Integer.parseInt(size.getText())))
+                JOptionPane.showMessageDialog(null,"Key generated successfully","Success",JOptionPane.INFORMATION_MESSAGE);
+            else
+                JOptionPane.showMessageDialog(null,"An error occurred while creating new encryption key","Failed to generate new key",JOptionPane.WARNING_MESSAGE);
 
+            EncryptionKey.setSaveFile(null);
+            savePath.setText("select save directory");
         });
     }
 }

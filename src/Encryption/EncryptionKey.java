@@ -1,6 +1,5 @@
 package Encryption;
 
-import javax.swing.*;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Random;
@@ -8,6 +7,7 @@ import java.util.Random;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class EncryptionKey {
     private byte [] key;
+    static private File saveFile = null;
 
     public EncryptionKey(File keyFile) throws IOException, IncorrectKeyException {
         try {
@@ -49,8 +49,9 @@ public class EncryptionKey {
         return Arrays.toString(key);
     }
 
-    public static boolean generateNewKey(File destination, int size){
+    public static boolean generateNewKeyToFile(int size){
         try {
+            File destination = saveFile;
             destination.createNewFile();
             byte [] key = generateNewKey(size);
             OutputStream stream = new FileOutputStream(destination);
@@ -61,5 +62,13 @@ public class EncryptionKey {
         catch (Exception e){
             return false;
         }
+    }
+
+    static public void setSaveFile(File file) {
+        saveFile = file;
+    }
+
+    public static File getSaveFile() {
+        return saveFile;
     }
 }
