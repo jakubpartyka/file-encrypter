@@ -6,7 +6,6 @@ import  GUI.*;
 
 public class Main {
 
-
     public static void main(String[] args) throws IOException {
         Logger.start();
 
@@ -15,7 +14,7 @@ public class Main {
 
         //start of test
         try {
-            Thread.sleep(50000);
+            Thread.sleep(500000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

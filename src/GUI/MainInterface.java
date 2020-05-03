@@ -19,7 +19,7 @@ public class MainInterface implements Runnable {
     private JButton browseButton;
     private JButton saveButton;
     private JTextField savePath;
-    private JTextField a256TextField;
+    private JTextField size;
     private JButton generateButton;
 
 
@@ -32,6 +32,9 @@ public class MainInterface implements Runnable {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);   //todo operation on widow close
         frame.add(mainPanel);
+
+        //todo remove
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         addActionListeners();
 
@@ -66,6 +69,30 @@ public class MainInterface implements Runnable {
                 }
                 //todo save choosen key location ???
             }
+        });
+
+        //SELECT KEY SAVE LOCATION
+        saveButton.addActionListener(e -> {
+            JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            jfc.setFileFilter(new FileNameExtensionFilter("binary files", "bin"));
+            int result = jfc.showSaveDialog(null);
+
+            if(result == JFileChooser.APPROVE_OPTION){
+                File saveFile = jfc.getSelectedFile();
+
+                if(!saveFile.getName().endsWith(".bin"))
+                    saveFile = new File(saveFile.getAbsolutePath() + ".bin");
+
+                savePath.setText(jfc.getSelectedFile().getAbsolutePath());
+
+                //save key to file
+                if(EncryptionKey.generateNewKey(saveFile,Integer.parseInt(size.getText())))
+                    JOptionPane.showMessageDialog(null,"Key generated successfully","Success",JOptionPane.INFORMATION_MESSAGE);
+                else
+                    JOptionPane.showMessageDialog(null,"An error occurred while creating new encryption key","Failed to generate new key",JOptionPane.WARNING_MESSAGE);
+            }
+
+
         });
     }
 }

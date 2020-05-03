@@ -1,5 +1,6 @@
 package Encryption;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Random;
@@ -46,5 +47,19 @@ public class EncryptionKey {
     @Override
     public String toString() {
         return Arrays.toString(key);
+    }
+
+    public static boolean generateNewKey(File destination, int size){
+        try {
+            destination.createNewFile();
+            byte [] key = generateNewKey(size);
+            OutputStream stream = new FileOutputStream(destination);
+            stream.write(key);
+            stream.close();
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
     }
 }
