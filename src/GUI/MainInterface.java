@@ -6,7 +6,9 @@ import javax.swing.*;
 public class MainInterface implements Runnable {
     private JFrame frame;
     private JTabbedPane tabbedPane1;
-    private JPanel panel1;
+    private JPanel mainPanel;
+    private JTextField textField1;
+    private JButton browseButton;
 
 
     @Override
@@ -18,6 +20,7 @@ public class MainInterface implements Runnable {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);   //todo operation on widow close
 
+        frame.add(mainPanel);
 
         frame.setVisible(true);
     }

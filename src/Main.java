@@ -1,10 +1,26 @@
+import javax.swing.*;
 import java.io.*;
+import  GUI.*;
 
 public class Main {
 
 
     public static void main(String[] args) throws IOException {
         Logger.start();
+
+        MainInterface mainInterface = new MainInterface();
+        SwingUtilities.invokeLater(mainInterface);
+
+        //start of test
+        try {
+            Thread.sleep(50000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.exit(1);
+
+        //end of test
+
 
         File file = new File("src/cat.jpg");
         EncryptingKey key = new EncryptingKey(EncryptingKey.generateNewKey(100));
