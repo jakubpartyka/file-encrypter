@@ -27,6 +27,9 @@ public class MainInterface implements Runnable {
     private JPanel encryptPanel;
     private JButton encryptButton;
     private JCheckBox deleteOriginalFilesCheckBox;
+    private JPanel panel2;
+    private JButton decryptButton;
+    private JCheckBox deleteSourceFilesCheckBox;
 
 
     @Override
@@ -43,6 +46,7 @@ public class MainInterface implements Runnable {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 
+        //FILE CHOOSER FOR ENCRYPT
         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         jfc.setApproveButtonText("Encrypt");
         jfc.setControlButtonsAreShown(false);
@@ -52,6 +56,17 @@ public class MainInterface implements Runnable {
         panel1.add(new JLabel("Choose file(s) to encrypt"),BorderLayout.NORTH);
         panel1.add(jfc,BorderLayout.CENTER);
 
+
+
+        //FILE CHOOSER FOR DECRYPT
+        JFileChooser jfc2 = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        jfc2.setApproveButtonText("Decrypt");
+        jfc2.setControlButtonsAreShown(false);
+        jfc2.setMultiSelectionEnabled(true);
+
+        panel2.setLayout(new BorderLayout());
+        panel2.add(new JLabel("Choose file(s) to decrypt"),BorderLayout.NORTH);
+        panel2.add(jfc2,BorderLayout.CENTER);
 
 
 
