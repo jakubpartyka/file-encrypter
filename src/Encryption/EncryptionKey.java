@@ -30,13 +30,13 @@ public class EncryptionKey {
     }
 
     @SuppressWarnings("SameParameterValue")
-    static byte[] generateNewKey(int keySize) {
+    private static byte[] generateNewKey(int keySize) {
         byte [] key = new byte[keySize];
         new Random((long) (Math.random() * Long.MAX_VALUE)).nextBytes(key);
         return key;
     }
 
-    public byte [] getKey(){
+    byte [] getKey(){
         return key;
     }
 

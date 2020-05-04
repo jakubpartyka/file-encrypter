@@ -8,7 +8,6 @@ import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class MainInterface implements Runnable {
@@ -181,11 +180,11 @@ public class MainInterface implements Runnable {
                 try {
                     decrypter.decrypt(file);
                 } catch (IncorrectKeyException e1) {
-                    JOptionPane.showMessageDialog(null, "Please select files to encrypt", "EMPTY SELECTION", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Select encryption key!","NO KEY SELECTED",JOptionPane.WARNING_MESSAGE);
                     return;
                 }
             }
-            
+
             refreshFileChoosers();
         });
     }
