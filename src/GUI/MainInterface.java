@@ -10,6 +10,7 @@ import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class MainInterface implements Runnable {
@@ -28,8 +29,10 @@ public class MainInterface implements Runnable {
     private JButton encryptButton;
     private JCheckBox deleteOriginalFilesCheckBox;
     private JPanel panel2;
-    private JButton decryptButton;
     private JCheckBox deleteSourceFilesCheckBox;
+    private JButton decryptButton;
+    private JFileChooser jfc;
+    private JFileChooser jfc2;
 
 
     @Override
@@ -47,8 +50,9 @@ public class MainInterface implements Runnable {
 
 
         //FILE CHOOSER FOR ENCRYPT
-        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         jfc.setApproveButtonText("Encrypt");
+        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         jfc.setControlButtonsAreShown(false);
         jfc.setMultiSelectionEnabled(true);
 
@@ -59,17 +63,15 @@ public class MainInterface implements Runnable {
 
 
         //FILE CHOOSER FOR DECRYPT
-        JFileChooser jfc2 = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        jfc2 = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         jfc2.setApproveButtonText("Decrypt");
+        jfc2.setFileSelectionMode(JFileChooser.FILES_ONLY);
         jfc2.setControlButtonsAreShown(false);
         jfc2.setMultiSelectionEnabled(true);
 
         panel2.setLayout(new BorderLayout());
         panel2.add(new JLabel("Choose file(s) to decrypt"),BorderLayout.NORTH);
         panel2.add(jfc2,BorderLayout.CENTER);
-
-
-
 
 
 
@@ -141,9 +143,27 @@ public class MainInterface implements Runnable {
             EncryptionKey.setSaveFile(null);
             savePath.setText("select save directory");
         });
+
+        //ENCRYPT BUTTON
+        encryptButton.addActionListener(e -> {
+            File [] files = jfc.getSelectedFiles();
+
+            //check if any files selected
+            if(files.length == 0)
+                JOptionPane.showMessageDialog(null,"Please select files to encrypt","EMPTY SELECTION",JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        //DECRYPT BUTTON
+        decryptButton.addActionListener(e -> {
+            File [] files = jfc2.getSelectedFiles();
+
+            //check if any files selected
+            if(files.length == 0)
+                JOptionPane.showMessageDialog(null,"Please select files to encrypt","EMPTY SELECTION",JOptionPane.INFORMATION_MESSAGE);
+        });
+
+
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
+
 }

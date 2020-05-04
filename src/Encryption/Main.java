@@ -22,7 +22,6 @@ public class Main {
 
         //end of test
 
-
         File file = new File("src/cat.jpg");
         EncryptionKey key = new EncryptionKey(EncryptionKey.generateNewKey(100));
         SecureByteShuffler.setEncryptKey(key);
