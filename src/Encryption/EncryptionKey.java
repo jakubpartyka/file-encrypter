@@ -36,7 +36,7 @@ public class EncryptionKey {
         return key;
     }
 
-    byte [] getKey(){
+    public byte [] getKey(){
         return key;
     }
 

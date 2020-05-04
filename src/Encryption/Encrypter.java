@@ -11,7 +11,10 @@ public class Encrypter extends FileAccessor{
         super("ENCR");
     }
 
-    public void encrypt(File input) throws NullPointerException{
+    public void encrypt(File input) throws IncorrectKeyException{
+        //check if key is set
+        if(SecureByteShuffler.keyEmpty())
+            throw new IncorrectKeyException("No key selected");
         try {
             this.input = input;
             String filename = "encrypted-" + input.getName() + ".bin";

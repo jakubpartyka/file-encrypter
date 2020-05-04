@@ -157,7 +157,7 @@ public class MainInterface implements Runnable {
                 try {
                     encrypter.encrypt(file);
                 }
-                catch (NullPointerException e1){
+                catch (IncorrectKeyException e1){
                     JOptionPane.showMessageDialog(null,"Select encryption key!","NO KEY SELECTED",JOptionPane.WARNING_MESSAGE);
                     return;
                 }
@@ -178,11 +178,16 @@ public class MainInterface implements Runnable {
 
             Decrypter decrypter = new Decrypter();
             for (File file : files) {
-                decrypter.decrypt(file);
+                try {
+                    decrypter.decrypt(file);
+                } catch (IncorrectKeyException e1) {
+                    JOptionPane.showMessageDialog(null, "Please select files to encrypt", "EMPTY SELECTION", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
             }
+            
+            refreshFileChoosers();
         });
-
-        refreshFileChoosers();
     }
 
     private void refreshFileChoosers() {

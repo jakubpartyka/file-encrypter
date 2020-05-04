@@ -12,13 +12,14 @@ public class Decrypter extends FileAccessor{
         super("DECR");
     }
 
-    public void decrypt(File input){
+    public void decrypt(File input) throws IncorrectKeyException {
+        //check if key is set
+        if(SecureByteShuffler.keyEmpty())
+            throw new IncorrectKeyException("No key selected");
         try {
             this.input = input;
             String filename = input.getName();
-            System.out.println(filename);
             filename = filename.substring(0,input.getName().lastIndexOf(".")).replace("encrypted-","");
-            System.out.println(filename);
 
             output = new File(input.getParent() + "/" + filename);
 
@@ -61,7 +62,7 @@ public class Decrypter extends FileAccessor{
         try {
             bytes = new byte[(int) input.length()];
             InputStream inputStream = new FileInputStream(input);
-            System.out.println(inputStream.read(bytes) + " bytes read from source file: " + input.getName());
+            log(inputStream.read(bytes) + " bytes read from source file: " + input.getName());
             inputStream.close();
         }
         catch (IOException e){
