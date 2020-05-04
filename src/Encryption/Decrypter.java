@@ -2,21 +2,25 @@ package Encryption;
 
 import java.io.*;
 
-class Decrypter extends FileAccessor{
+public class Decrypter extends FileAccessor{
 
     private byte [] bytes;
     private File output;
     private File input;
 
-    Decrypter() {
+    public Decrypter() {
         super("DECR");
     }
 
-    void decrypt(File input){
+    public void decrypt(File input){
         try {
             this.input = input;
-            String filename = input.getName().replace("encrypted-","");
-            output = new File("src/" + filename);
+            String filename = input.getName();
+            System.out.println(filename);
+            filename = filename.substring(0,input.getName().lastIndexOf(".")).replace("encrypted-","");
+            System.out.println(filename);
+
+            output = new File(input.getParent() + "/" + filename);
 
             clearFileContent(output);
 
@@ -27,8 +31,8 @@ class Decrypter extends FileAccessor{
             SecureByteShuffler.decrypt(bytes);
 
             writeOutput();
-
         } catch (Exception e){
+            e.printStackTrace();
             log("failed to decrypt file: " + input.getName() + " due to error: " + e.getMessage());
         }
         log("decryption of file " + input.getName() + " finished successfully");

@@ -1,20 +1,21 @@
 package Encryption;
 
 import java.io.*;
-class Encrypter extends FileAccessor{
+public class Encrypter extends FileAccessor{
 
     private byte [] bytes;
     private File output;
     private File input;
 
-    Encrypter() {
+    public Encrypter() {
         super("ENCR");
     }
 
-    void encrypt(File input){
+    public void encrypt(File input) throws NullPointerException{
         try {
-            output = new File("src/encrypted-" + input.getName());
             this.input = input;
+            String filename = "encrypted-" + input.getName() + ".bin";
+            output = new File(input.getParent() + "/" + filename);
 
             clearFileContent(output);
 

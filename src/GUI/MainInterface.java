@@ -1,8 +1,6 @@
 package GUI;
 
-import Encryption.EncryptionKey;
-import Encryption.IncorrectKeyException;
-import Encryption.SecureByteShuffler;
+import Encryption.*;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -149,8 +147,23 @@ public class MainInterface implements Runnable {
             File [] files = jfc.getSelectedFiles();
 
             //check if any files selected
-            if(files.length == 0)
-                JOptionPane.showMessageDialog(null,"Please select files to encrypt","EMPTY SELECTION",JOptionPane.INFORMATION_MESSAGE);
+            if(files.length == 0) {
+                JOptionPane.showMessageDialog(null, "Please select files to encrypt", "EMPTY SELECTION", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            Encrypter encrypter = new Encrypter();
+            for (File file : files) {
+                try {
+                    encrypter.encrypt(file);
+                }
+                catch (NullPointerException e1){
+                    JOptionPane.showMessageDialog(null,"Select encryption key!","NO KEY SELECTED",JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            }
+
+            refreshFileChoosers();
         });
 
         //DECRYPT BUTTON
@@ -158,11 +171,28 @@ public class MainInterface implements Runnable {
             File [] files = jfc2.getSelectedFiles();
 
             //check if any files selected
-            if(files.length == 0)
-                JOptionPane.showMessageDialog(null,"Please select files to encrypt","EMPTY SELECTION",JOptionPane.INFORMATION_MESSAGE);
+            if(files.length == 0) {     //todo null pointer exception key not chosen
+                JOptionPane.showMessageDialog(null, "Please select files to encrypt", "EMPTY SELECTION", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            Decrypter decrypter = new Decrypter();
+            for (File file : files) {
+                decrypter.decrypt(file);
+            }
         });
 
+        refreshFileChoosers();
+    }
 
+    private void refreshFileChoosers() {
+        File tmp = jfc.getCurrentDirectory();
+        jfc.setCurrentDirectory(new File("/"));
+        jfc.setCurrentDirectory(tmp);
+
+        File tmp2 = jfc2.getCurrentDirectory();
+        jfc2.setCurrentDirectory(new File("/"));
+        jfc2.setCurrentDirectory(tmp2);
     }
 
 
