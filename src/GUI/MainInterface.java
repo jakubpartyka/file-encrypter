@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -43,8 +45,7 @@ public class MainInterface implements Runnable {
         frame.add(mainPanel);
 
         //todo remove
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         //FILE CHOOSER FOR ENCRYPT
         jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -79,6 +80,18 @@ public class MainInterface implements Runnable {
     }
 
     private void addActionListeners(){
+        //WINDOW LISTENER FOR CLOSE OPERATION
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if(Main.isFileOperationInProgress()){
+                    JOptionPane.showMessageDialog(null,"Wait for encrypt/decrypt operation to finish.","ENCRYPTION IN PROGRESS",JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+                super.windowClosing(e);
+            }
+        });
+
         //CHOOSE FILE FROM SYSTEM
         browseButton.addActionListener(e -> {
             JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -143,6 +156,8 @@ public class MainInterface implements Runnable {
 
         //ENCRYPT BUTTON
         encryptButton.addActionListener(e -> {
+            Main.setFileOperationInProgress(true);
+
             File [] files = jfc.getSelectedFiles();
 
             //check if any files selected
@@ -166,10 +181,12 @@ public class MainInterface implements Runnable {
             }
 
             refreshFileChoosers();
+            Main.setFileOperationInProgress(false);
         });
 
         //DECRYPT BUTTON
         decryptButton.addActionListener(e -> {
+            Main.setFileOperationInProgress(true);
             File [] files = jfc2.getSelectedFiles();
 
             //check if any files selected
@@ -192,6 +209,7 @@ public class MainInterface implements Runnable {
             }
 
             refreshFileChoosers();
+            Main.setFileOperationInProgress(false);
         });
     }
 

@@ -16,9 +16,6 @@ class Logger {
             String logMessage = ts + "[" + identifier + "]:" + message;
             fileWriter.write( logMessage + "\n");
 
-            //todo remove
-            System.out.println(logMessage);
-
             fileWriter.close();
         } catch (IOException ignored) {}
     }
