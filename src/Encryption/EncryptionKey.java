@@ -25,10 +25,6 @@ public class EncryptionKey {
         }
     }
 
-    EncryptionKey(byte[] key) {
-        this.key = key;
-    }
-
     @SuppressWarnings("SameParameterValue")
     private static byte[] generateNewKey(int keySize) {
         byte [] key = new byte[keySize];

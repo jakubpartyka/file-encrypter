@@ -11,60 +11,45 @@ public class Encrypter extends FileAccessor{
         super("ENCR");
     }
 
-    public void encrypt(File input) throws IncorrectKeyException{
+    public void encrypt(File input) throws IncorrectKeyException, IOException{
         //check if key is set
         if(SecureByteShuffler.keyEmpty())
             throw new IncorrectKeyException("No key selected");
-        try {
-            this.input = input;
-            String filename = "encrypted-" + input.getName() + ".bin";
-            output = new File(input.getParent() + "/" + filename);
 
-            clearFileContent(output);
+        this.input = input;
+        String filename = "encrypted-" + input.getName() + ".bin";
+        output = new File(input.getParent() + "/" + filename);
 
-            readInput();
+        clearFileContent(output);
 
-            SecureByteShuffler.original = bytes.clone();
+        readInput();
 
-            SecureByteShuffler.encrypt(bytes);
+        SecureByteShuffler.original = bytes.clone();
 
-            writeOutput();
+        SecureByteShuffler.encrypt(bytes);
 
-        } catch (Exception e){
-            e.printStackTrace();
-            log("failed to encrypt file: " + input.getName() + " due to error: " + e.getMessage());
-        }
+        writeOutput();
+
         log("encryption of file " + input.getName() + " finished successfully");
     }
 
     @Override
-    protected void writeOutput(){
-        try {
-            //save output
-            OutputStream outputStream = new FileOutputStream(output);
-            outputStream.write(bytes,0,bytes.length);
-            outputStream.close();
-            //delete input
-            if(!input.delete())
-                log("failed to delete source file!");
-        } catch (IOException e) {
-            e.printStackTrace();
-            //todo
-        }
+    protected void writeOutput() throws IOException{
+        //save output
+        OutputStream outputStream = new FileOutputStream(output);
+        outputStream.write(bytes,0,bytes.length);
+        outputStream.close();
+        //delete input
+        if(!input.delete())
+            log("failed to delete source file!");
     }
 
     @Override
-    protected void readInput() {
-        try {
-            bytes = new byte[(int) input.length()];
-            InputStream inputStream = new FileInputStream(input);
-            log(inputStream.read(bytes) + " bytes read from file: " + input.getName());
-            inputStream.close();
-        }
-        catch (IOException e){
-            e.printStackTrace();
-            //todo
-        }
+    protected void readInput() throws IOException {
+        bytes = new byte[(int) input.length()];
+        InputStream inputStream = new FileInputStream(input);
+        log(inputStream.read(bytes) + " bytes read from file: " + input.getName());
+        inputStream.close();
     }
 
     //todo delete input file only after output was saved successfully

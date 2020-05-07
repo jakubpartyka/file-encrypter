@@ -2,6 +2,7 @@ package Encryption;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 abstract class FileAccessor {
@@ -11,9 +12,9 @@ abstract class FileAccessor {
         this.identifier = identifier;
     }
 
-    abstract void readInput();
+    abstract void readInput() throws IOException;
 
-    abstract void writeOutput();
+    abstract void writeOutput() throws IOException;
 
     void log(String message){
         Logger.log(message, identifier);

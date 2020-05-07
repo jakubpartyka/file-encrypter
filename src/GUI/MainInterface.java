@@ -159,6 +159,9 @@ public class MainInterface implements Runnable {
                 catch (IncorrectKeyException e1){
                     JOptionPane.showMessageDialog(null,"Select encryption key!","NO KEY SELECTED",JOptionPane.WARNING_MESSAGE);
                     return;
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null,"An error occurred during file read/write operation.\nError message:\n" +
+                            e1.getMessage(), "Read/Write operation failed",JOptionPane.WARNING_MESSAGE);
                 }
             }
 
@@ -170,7 +173,7 @@ public class MainInterface implements Runnable {
             File [] files = jfc2.getSelectedFiles();
 
             //check if any files selected
-            if(files.length == 0) {     //todo null pointer exception key not chosen
+            if(files.length == 0) {
                 JOptionPane.showMessageDialog(null, "Please select files to encrypt", "EMPTY SELECTION", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
@@ -182,6 +185,9 @@ public class MainInterface implements Runnable {
                 } catch (IncorrectKeyException e1) {
                     JOptionPane.showMessageDialog(null,"Select encryption key!","NO KEY SELECTED",JOptionPane.WARNING_MESSAGE);
                     return;
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null,"An error occurred during file read/write operation.\nError message:\n" +
+                            e1.getMessage(), "Read/Write operation failed",JOptionPane.WARNING_MESSAGE);
                 }
             }
 
