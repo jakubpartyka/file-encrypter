@@ -33,6 +33,8 @@ public class MainInterface implements Runnable {
     private JPanel panel2;
     private JCheckBox deleteSourceFilesCheckBox;
     private JButton decryptButton;
+    private JButton refresh;
+    private JButton refresh2;
     private JFileChooser jfc;
     private JFileChooser jfc2;
 
@@ -107,6 +109,10 @@ public class MainInterface implements Runnable {
                 Thread.currentThread().interrupt();
             }
         });
+
+        //RELOAD FILE VIEW BUTTONS
+        refresh.addActionListener(e -> refreshFileChoosers());
+        refresh2.addActionListener(e -> refreshFileChoosers());
 
         //CHOOSE FILE FROM SYSTEM
         browseButton.addActionListener(e -> {
