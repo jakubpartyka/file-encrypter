@@ -10,6 +10,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class MainInterface implements Runnable {
@@ -33,6 +36,8 @@ public class MainInterface implements Runnable {
     private JFileChooser jfc;
     private JFileChooser jfc2;
 
+    private HashSet<File> files = new HashSet<>();
+
 
     @Override
     public void run() {
@@ -50,9 +55,9 @@ public class MainInterface implements Runnable {
         //FILE CHOOSER FOR ENCRYPT
         jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         jfc.setApproveButtonText("Encrypt");
-        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         jfc.setControlButtonsAreShown(false);
         jfc.setMultiSelectionEnabled(true);
+        jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
         panel1.setLayout(new BorderLayout());
         panel1.add(new JLabel("Choose file(s) to encrypt"),BorderLayout.NORTH);
@@ -63,9 +68,9 @@ public class MainInterface implements Runnable {
         //FILE CHOOSER FOR DECRYPT
         jfc2 = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         jfc2.setApproveButtonText("Decrypt");
-        jfc2.setFileSelectionMode(JFileChooser.FILES_ONLY);
         jfc2.setControlButtonsAreShown(false);
         jfc2.setMultiSelectionEnabled(true);
+        jfc2.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
         panel2.setLayout(new BorderLayout());
         panel2.add(new JLabel("Choose file(s) to decrypt"),BorderLayout.NORTH);
@@ -88,7 +93,18 @@ public class MainInterface implements Runnable {
                     JOptionPane.showMessageDialog(null,"Wait for encrypt/decrypt operation to finish.","ENCRYPTION IN PROGRESS",JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
-                super.windowClosing(e);
+                this.windowClosed(e);
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                super.windowDeactivated(e);
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                frame.dispose();
+                Thread.currentThread().interrupt();
             }
         });
 
@@ -156,7 +172,6 @@ public class MainInterface implements Runnable {
 
         //ENCRYPT BUTTON
         encryptButton.addActionListener(e -> {
-            Main.setFileOperationInProgress(true);
 
             File [] files = jfc.getSelectedFiles();
 
@@ -166,8 +181,11 @@ public class MainInterface implements Runnable {
                 return;
             }
 
+            prepareFiles(files);
+
             Encrypter encrypter = new Encrypter();
-            for (File file : files) {
+            Main.setFileOperationInProgress(true);
+            for (File file : this.files) {
                 try {
                     encrypter.encrypt(file);
                 }
@@ -179,14 +197,15 @@ public class MainInterface implements Runnable {
                             e1.getMessage(), "Read/Write operation failed",JOptionPane.WARNING_MESSAGE);
                 }
             }
+            Main.setFileOperationInProgress(false);
+            this.files.clear();
+
 
             refreshFileChoosers();
-            Main.setFileOperationInProgress(false);
         });
 
         //DECRYPT BUTTON
         decryptButton.addActionListener(e -> {
-            Main.setFileOperationInProgress(true);
             File [] files = jfc2.getSelectedFiles();
 
             //check if any files selected
@@ -195,8 +214,11 @@ public class MainInterface implements Runnable {
                 return;
             }
 
+            prepareFiles(files);
+
+            Main.setFileOperationInProgress(true);
             Decrypter decrypter = new Decrypter();
-            for (File file : files) {
+            for (File file : this.files) {
                 try {
                     decrypter.decrypt(file);
                 } catch (IncorrectKeyException e1) {
@@ -207,9 +229,11 @@ public class MainInterface implements Runnable {
                             e1.getMessage(), "Read/Write operation failed",JOptionPane.WARNING_MESSAGE);
                 }
             }
+            Main.setFileOperationInProgress(false);
+            this.files.clear();
+
 
             refreshFileChoosers();
-            Main.setFileOperationInProgress(false);
         });
     }
 
@@ -223,5 +247,36 @@ public class MainInterface implements Runnable {
         jfc2.setCurrentDirectory(tmp2);
     }
 
+    private void prepareFiles(File [] input){
+        List<File> directories = new ArrayList<>();
 
+        //fist loop for JFileChooser input array
+        for (File file : input) {
+            if(file.isFile())
+                files.add(file);
+            else
+                directories.add(file);
+        }
+
+        while (!directories.isEmpty()) {
+            File file = directories.remove(0);
+
+            try {
+                for (File listedFile : file.listFiles()) {
+                    if (listedFile.isDirectory())
+                        directories.add(listedFile);
+                    else {
+                        files.add(listedFile);
+                        directories.remove(listedFile);
+                    }
+                }
+            }catch (NullPointerException e){
+                continue;
+            }
+        }
+    }
+
+
+    //todo list of ignored files / extensions
+    //todo refresh view button in JFC
 }
