@@ -200,8 +200,10 @@ public class MainInterface implements Runnable {
                     evt -> {
                         if ("progress".equals(evt.getPropertyName())) {
                             progressBar1.setValue((Integer)evt.getNewValue());
+                            refreshFileChoosers();
                         }
                     });
+            progressBar1.setValue(0);
             ex.execute();
 
         });
@@ -223,8 +225,10 @@ public class MainInterface implements Runnable {
                     evt -> {
                         if ("progress".equals(evt.getPropertyName())) {
                             progressBar1.setValue((Integer)evt.getNewValue());
+                            refreshFileChoosers();
                         }
                     });
+            progressBar1.setValue(0);
             ex.execute();
 
             refreshFileChoosers();
