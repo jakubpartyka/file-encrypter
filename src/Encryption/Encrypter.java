@@ -1,17 +1,15 @@
 package Encryption;
+import sun.rmi.runtime.Log;
 
 import java.io.*;
-public class Encrypter extends FileAccessor{
+
+public class Encrypter implements FileAccessor {
 
     private byte [] bytes;
     private File output;
     private File input;
 
-    public Encrypter() {
-        super("ENCR");
-    }
-
-    public void encrypt(File input) throws IncorrectKeyException, IOException{
+    void encrypt(File input) throws IncorrectKeyException, IOException {
         //check if key is set
         if(SecureByteShuffler.keyEmpty())
             throw new IncorrectKeyException("No key selected");
@@ -20,7 +18,7 @@ public class Encrypter extends FileAccessor{
         String filename = "encrypted-" + input.getName() + ".bin";
         output = new File(input.getParent() + "/" + filename);
 
-        clearFileContent(output);
+        FileAccessor.clearFileContent(output);
 
         readInput();
 
@@ -34,7 +32,7 @@ public class Encrypter extends FileAccessor{
     }
 
     @Override
-    protected void writeOutput() throws IOException{
+    public void writeOutput() throws IOException{
         //save output
         OutputStream outputStream = new FileOutputStream(output);
         outputStream.write(bytes,0,bytes.length);
@@ -45,7 +43,12 @@ public class Encrypter extends FileAccessor{
     }
 
     @Override
-    protected void readInput() throws IOException {
+    public void log(String message) {
+        Logger.log(message,"ENCR");
+    }
+
+    @Override
+    public void readInput() throws IOException {
         bytes = new byte[(int) input.length()];
         InputStream inputStream = new FileInputStream(input);
         log(inputStream.read(bytes) + " bytes read from file: " + input.getName());

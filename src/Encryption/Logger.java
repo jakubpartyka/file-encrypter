@@ -4,7 +4,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-class Logger {
+public class Logger {
     private static String logFilePath;
     private static File logFile;
 
@@ -20,7 +20,7 @@ class Logger {
         } catch (IOException ignored) {}
     }
 
-    static void start() throws IOException {
+    public static void start() throws IOException {
         readConfigFile();
         logNewSession();
     }

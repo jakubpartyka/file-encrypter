@@ -1,8 +1,8 @@
-package Encryption;
+package GUI;
 
 import javax.swing.*;
 import java.io.*;
-import  GUI.*;
+import Encryption.*;
 
 public class Main {
     private static boolean fileOperationInProgress = false;
@@ -12,8 +12,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Logger.start();
 
-        MainInterface mainInterface = new MainInterface();
-        SwingUtilities.invokeLater(mainInterface);
+        SwingUtilities.invokeLater(new MainInterface());
     }
 
     public static boolean isFileOperationInProgress() {

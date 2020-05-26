@@ -5,20 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-abstract class FileAccessor {
-    private String identifier;
+interface FileAccessor {
 
-    FileAccessor(String identifier) {
-        this.identifier = identifier;
-    }
+    void readInput() throws IOException;
 
-    abstract void readInput() throws IOException;
+    void writeOutput() throws IOException;
 
-    abstract void writeOutput() throws IOException;
-
-    void log(String message){
-        Logger.log(message, identifier);
-    }
+    void log(String message);
 
     static void clearFileContent(File file){
         PrintWriter writer;

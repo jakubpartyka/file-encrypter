@@ -7,9 +7,12 @@ import java.util.Random;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class EncryptionKey {
     private byte [] key;
+    private String keyPath;
     static private File saveFile = null;
 
+
     public EncryptionKey(File keyFile) throws IOException, IncorrectKeyException {
+        keyPath = keyFile.getAbsolutePath();
         try {
             InputStream inputStream = new FileInputStream(keyFile);
             byte[] data = new byte[(int) keyFile.length()];
@@ -66,5 +69,9 @@ public class EncryptionKey {
 
     public static File getSaveFile() {
         return saveFile;
+    }
+
+    public String getPath() {
+        return keyPath;
     }
 }

@@ -1,18 +1,12 @@
 package Encryption;
-
-import GUI.MainInterface;
-
 import java.io.*;
 
-public class Decrypter extends FileAccessor{
+public class Decrypter implements FileAccessor {
 
     private byte [] bytes;
     private File output;
     private File input;
 
-    public Decrypter() {
-        super("DECR");
-    }
 
     public void decrypt(File input) throws IncorrectKeyException,IOException {
         //check if key is set
@@ -25,7 +19,7 @@ public class Decrypter extends FileAccessor{
 
         output = new File(input.getParent() + "/" + filename);
 
-        clearFileContent(output);
+        FileAccessor.clearFileContent(output);
 
         readInput();
 
@@ -39,7 +33,7 @@ public class Decrypter extends FileAccessor{
     }
 
     @Override
-    protected void writeOutput() throws IOException{
+    public void writeOutput() throws IOException{
         //save output
         OutputStream outputStream = new FileOutputStream(output);
         outputStream.write(bytes,0,bytes.length);
@@ -51,7 +45,12 @@ public class Decrypter extends FileAccessor{
     }
 
     @Override
-    protected void readInput() throws IOException{
+    public void log(String message) {
+        Logger.log(message,"DECR");
+    }
+
+    @Override
+    public void readInput() throws IOException{
         bytes = new byte[(int) input.length()];
         InputStream inputStream = new FileInputStream(input);
         log(inputStream.read(bytes) + " bytes read from source file: " + input.getName());
