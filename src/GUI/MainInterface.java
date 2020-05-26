@@ -37,8 +37,8 @@ public class MainInterface implements Runnable {
     private JButton refresh;
     private JButton refresh2;
     public JProgressBar progressBar1;
+    private JButton browseButton1;
     private JTextArea specifyPathToKeyTextArea;
-    private JButton browseDefaultKey;
     private JFileChooser jfc;
     private JFileChooser jfc2;
 
@@ -91,7 +91,6 @@ public class MainInterface implements Runnable {
         panel2.add(new JLabel("Choose file(s) to decrypt"),BorderLayout.NORTH);
         panel2.add(jfc2,BorderLayout.CENTER);
 
-        specifyPathToKeyTextArea.setBackground(new Color(0,0,0,0));
 
         addActionListeners();
 
